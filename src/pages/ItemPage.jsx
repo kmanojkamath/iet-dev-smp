@@ -1,5 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import items from "../data/items";
+import PurchaseButton from "../components/PurchaseButton";
+import RatingWidget from "../components/RatingWidget";
 
 function ItemPage() {
   const { id } = useParams();
@@ -30,6 +32,10 @@ function ItemPage() {
         <hr className="detail-divider" />
 
         <div className="detail-actions">
+          <div className="detail-action-group">
+            <PurchaseButton />
+            <RatingWidget />
+          </div>
           <span className="item-meta">Fast shipping · 30-day returns</span>
         </div>
       </div>

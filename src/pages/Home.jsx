@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import items from "../data/items";
 import { useState } from "react";
 import { searchItems, countItems } from "../utils/searchItems";
+import PurchaseButton from "../components/PurchaseButton";
+import ItemCard from "../components/ItemCard";
 
 function Home() {
   const [searchText, setSearchText] = useState("");
@@ -38,19 +40,12 @@ function Home() {
           ></input>
         </div>
         <div className="results-count">
-          {countItems(items,searchText)} products found
+          {countItems(items, searchText)} products found
         </div>
       </div>
 
-      <section className="product-list">
-        {visibleItems.map((item) => (
-          <div key={item.id} className="product-line">
-            <div>{item.name}</div>
-            <div>{item.category}</div>
-            <div>₹{item.price}</div>
-            <div>{item.description}</div>
-          </div>
-        ))}
+      <section className="item-grid">
+        {visibleItems.map((item) => <ItemCard id={item.id} key={item.id}/>)}
       </section>
     </main>
   );
