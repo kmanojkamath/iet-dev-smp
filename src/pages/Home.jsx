@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import items from "../data/items";
+import { useState } from "react";
+import { searchItems, countItems } from "../utils/searchItems";
 
 function Home() {
+  const [searchText, setSearchText] = useState("");
+  const visibleItems = searchItems(items, searchText);
+
   return (
     <main className="page home-page">
       <section className="home-hero">
@@ -22,8 +27,23 @@ function Home() {
         </div>
       </section>
 
+      <div className="search-bar-wrapper">
+        <div className="filter-row">
+          <input
+            className="search-bar"
+            type="text"
+            placeholder="Search products by name or category or description..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          ></input>
+        </div>
+        <div className="results-count">
+          {countItems(items,searchText)} products found
+        </div>
+      </div>
+
       <section className="product-list">
-        {items.map((item) => (
+        {visibleItems.map((item) => (
           <div key={item.id} className="product-line">
             <div>{item.name}</div>
             <div>{item.category}</div>
