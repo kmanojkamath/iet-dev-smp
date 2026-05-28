@@ -1,4 +1,9 @@
-export function searchItems(items, searchText) {
+export function searchItems(
+  items,
+  searchText,
+  selectedCategory,
+  selectedPrice,
+) {
   const search = searchText.toLowerCase();
 
   const score = (item) => {
@@ -10,12 +15,7 @@ export function searchItems(items, searchText) {
 
     if (name.startsWith(search)) return 1;
 
-    if (
-      name
-        .split(" ")
-        .some((word) => word.startsWith(search))
-    )
-      return 2;
+    if (name.split(" ").some((word) => word.startsWith(search))) return 2;
 
     if (name.includes(search)) return 3;
 
@@ -23,11 +23,7 @@ export function searchItems(items, searchText) {
 
     if (description.startsWith(search)) return 5;
 
-    if (
-      description
-        .split(" ")
-        .some((word) => word.startsWith(search))
-    )
+    if (description.split(" ").some((word) => word.startsWith(search)))
       return 6;
 
     if (description.includes(search)) return 7;
@@ -37,24 +33,56 @@ export function searchItems(items, searchText) {
 
   return items
     .filter((item) => {
-      return (
+      const matchesSearch =
         search === "" ||
         item.name.toLowerCase().includes(search) ||
         item.category.toLowerCase().includes(search) ||
-        item.description.toLowerCase().includes(search)
-      );
+        item.description.toLowerCase().includes(search);
+
+      const matchesCategory =
+        item.category === selectedCategory ||
+        selectedCategory === "all";
+
+      const matchesPrice =
+        selectedPrice === "all" ||
+        (selectedPrice === "-20" && item.price < 20) ||
+        (selectedPrice === "20-40" &&
+          item.price >= 20 &&
+          item.price <= 40) ||
+        (selectedPrice === "40-" && item.price > 40);
+
+      return matchesSearch && matchesCategory && matchesPrice;
     })
     .sort((a, b) => score(a) - score(b));
 }
 
-export function countItems(items, searchText) {
-    const search = searchText.toLowerCase();
-    return items.filter((item) => {
-      return (
-        search === "" ||
-        item.name.toLowerCase().includes(search) ||
-        item.category.toLowerCase().includes(search) ||
-        item.description.toLowerCase().includes(search)
-      );
-    }).length;
+export function countItems(
+  items,
+  searchText,
+  selectedCategory,
+  selectedPrice,
+) {
+  const search = searchText.toLowerCase();
+
+  return items.filter((item) => {
+    const matchesSearch =
+      search === "" ||
+      item.name.toLowerCase().includes(search) ||
+      item.category.toLowerCase().includes(search) ||
+      item.description.toLowerCase().includes(search);
+
+    const matchesCategory =
+      item.category === selectedCategory ||
+      selectedCategory === "all";
+
+    const matchesPrice =
+      selectedPrice === "all" ||
+      (selectedPrice === "-20" && item.price < 20) ||
+      (selectedPrice === "20-40" &&
+        item.price >= 20 &&
+        item.price <= 40) ||
+      (selectedPrice === "40-" && item.price > 40);
+
+    return matchesSearch && matchesCategory && matchesPrice;
+  }).length;
 }
