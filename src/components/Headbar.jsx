@@ -7,7 +7,7 @@ const NAV_ITEMS = [
   { label: "Contact" },
 ];
 
-function Headbar() {
+function Headbar({ setShowSignin, name }) {
   const { darkMode, toggleTheme } = useTheme();
   return (
     <header className="header">
@@ -33,9 +33,20 @@ function Headbar() {
         <button type="button" className="theme-toggle" onClick={toggleTheme}>
           {darkMode ? "Dark" : "Light"}
         </button>
-        <button type="button" className="btn btn-sm btn-ghost" disabled>
-          Sign In
-        </button>
+        {name ? (
+          <button
+            className="btn btn-sm btn-ghost"
+            type="button"
+          >{`Hi, ${name}`}</button>
+        ) : (
+          <button
+            type="button"
+            className="btn btn-sm btn-primary"
+            onClick={() => setShowSignin(true)}
+          >
+            Sign In
+          </button>
+        )}
       </div>
     </header>
   );

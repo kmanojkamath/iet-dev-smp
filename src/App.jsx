@@ -7,12 +7,17 @@ import Collections from "./pages/Collections";
 import Contact from "./pages/Contact";
 import CartSidebar from "./components/CartSidebar";
 import { useTheme } from "./context/ThemeContext";
+import { useState } from "react";
+import Signin from "./components/Signin";
 
 function App() {
   const { darkMode, toggleTheme } = useTheme();
+  const [ showSignin, setShowSignin ] = useState(false);
+  const [name, setName] = useState("");
   return (
     <div className={`app ${darkMode ? "dark" : "light"}`}>
-      <Headbar />
+      <Headbar setShowSignin={setShowSignin} name={name}/>
+      {showSignin && <Signin setShowSignin={setShowSignin} setName={setName}/>}
       <div className="app-layout">
         <main className="app-content">
           <Routes>
